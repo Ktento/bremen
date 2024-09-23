@@ -17,7 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: bremen-production.up.railway.app
+  host: db
   username: postgres
   password: password
   pool: 5
@@ -82,4 +82,6 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  database: myapp_production
+  username: myapp
+  password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>

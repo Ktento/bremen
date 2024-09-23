@@ -30,8 +30,6 @@ services:
       - .:/myapp
     ports:
       - "8080:3000"
-    environment:
-      RAILS_ENV: production
     # webはdbに依存していることを明示
     # 接続先をdbと記載するだけで使える
     depends_on:

@@ -32,8 +32,7 @@
 /.env
 /.env.*
 
-# Ignore database configuration
-/config/database.yml
+
 
 # Ignore system-generated files
 .DS_Store

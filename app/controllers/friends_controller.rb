@@ -1,5 +1,5 @@
 class FriendsController < ApplicationController
-  before_action :set_friend, only: %i[ show update destroy ]
+  before_action :set_friend, only: %i[ update destroy ]
 
   # GET /friends
   def index
@@ -8,9 +8,17 @@ class FriendsController < ApplicationController
     render json: @friends
   end
 
-  # GET /friends/1
+  # GET /friends/show
+  #フレンドのリストを返す関数
   def show
-    render json: @friend
+    # user_id をリクエストから取得
+    user_id = friend_show_params[:serach_user_id]
+    #user_idからfriendのリストを取得
+    if @friend=Friend.where(A_user_id: user_id).or(Friend.where(B_user_id: user_id))
+      render json: @friend
+    else
+      render json: @friend.errors, status: :unprocessable_entity
+    end
   end
 
   # POST /friends
@@ -47,5 +55,9 @@ class FriendsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:A_user_id, :B_user_id)
+    end
+
+    def friend_show_params
+      params.require(:friend).permit(:serach_user_id)
     end
 end

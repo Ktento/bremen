@@ -13,6 +13,22 @@ class TracksController < ApplicationController
     render json: @track
   end
 
+  # GET /tracks/search?track_name=曲名
+  def search
+    track_name = params[:track_name]
+
+    # Spotify API の認証
+    RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
+    
+    # 曲名を含むトラックを検索
+    tracks = RSpotify::Track.search(track_name)
+
+    # 結果を日本語で取得
+    ENV['ACCEPT_LANGUAGE'] = "ja"
+
+    render json: tracks
+  end
+
   # POST /tracks
   def create
     @track = Track.new(track_params)

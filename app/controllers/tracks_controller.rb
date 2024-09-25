@@ -13,21 +13,37 @@ class TracksController < ApplicationController
     render json: @track
   end
 
-  # GET /tracks/search?track_name=曲名
+  # GET /tracks/search?track_name=曲名 で、検索候補を返すことができるよう作成中　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   def search
     track_name = params[:track_name]
-
-    # Spotify API の認証
-    RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
-    
-    # 曲名を含むトラックを検索
-    tracks = RSpotify::Track.search(track_name)
-
-    # 結果を日本語で取得
-    ENV['ACCEPT_LANGUAGE'] = "ja"
-
-    render json: tracks
+  
+    begin
+      # Spotify APIの認証
+      RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
+        
+      # 結果を日本語で取得
+      ENV['ACCEPT_LANGUAGE'] = "ja"
+  
+      # 曲を検索
+      tracks = RSpotify::Track.search(track_name)
+       
+      # 結果があれば返す
+      if tracks.any?
+        render json: tracks.map { |track| 
+          {
+            track_name: track.name,
+            artists: track.artists.map(&:name),
+            album: track.album.name
+          } 
+        }
+      else
+        render json: { message: "曲が見つかりませんでした。" }, status: :not_found
+      end
+    rescue StandardError => e
+      render json: { error: e.message }, status: :internal_server_error
+    end
   end
+  # ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
   # POST /tracks
   def create

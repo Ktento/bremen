@@ -15,10 +15,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   enable_extension "plpgsql"
 
   create_table "friends", force: :cascade do |t|
-    t.string "A_user_id"
-    t.string "B_user_id"
+    t.bigint "A_user_id", null: false
+    t.bigint "B_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["A_user_id", "B_user_id"], name: "index_friends_on_A_user_id_and_B_user_id", unique: true
+    t.index ["A_user_id"], name: "index_friends_on_A_user_id"
+    t.index ["B_user_id"], name: "index_friends_on_B_user_id"
   end
 
   create_table "group_tracks", force: :cascade do |t|
@@ -65,10 +68,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
 
   create_table "user_tracks", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "group_id", null: false
+    t.bigint "track_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_user_tracks_on_group_id"
+    t.index ["track_id"], name: "index_user_tracks_on_track_id"
     t.index ["user_id"], name: "index_user_tracks_on_user_id"
   end
 
@@ -80,10 +83,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "friends", "users", column: "A_user_id"
+  add_foreign_key "friends", "users", column: "B_user_id"
   add_foreign_key "group_tracks", "groups"
   add_foreign_key "group_tracks", "tracks"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
-  add_foreign_key "user_tracks", "groups"
+  add_foreign_key "user_tracks", "tracks"
   add_foreign_key "user_tracks", "users"
 end

@@ -1,6 +1,4 @@
 class FriendsController < ApplicationController
-  before_action :set_friend, only: %i[ update destroy ]
-
   # GET /friends
   def index
     @friends = Friend.all
@@ -26,8 +24,8 @@ class FriendsController < ApplicationController
     user_a = friend_params[:A_user_id].to_i
     user_b = friend_params[:B_user_id].to_i  
 
-    #指定されたidが等しいまたは0より小さい場合挿入できない
-    if user_a==user_b||user_a<0||user_b<0
+    #無効なIDのチェック
+    if user_a<0||user_b<0||user_a==user_b
       render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
     end
     #それぞれのuser_idから小さい方をA_user_idに設定(UNIQ制約をAとBに持たせているが順不同ははじけないため)
@@ -45,17 +43,30 @@ class FriendsController < ApplicationController
       render json: @friend.errors, status: :unprocessable_entity
     end
   end
-  # DELETE /friends/1
-  def destroy
-    @friend.destroy
+
+  def del
+    #bodyからuser_idの取り出し
+    user_a = friend_params[:A_user_id].to_i
+    user_b = friend_params[:B_user_id].to_i  
+
+    #無効なIDのチェック
+    if user_a<0||user_b<0||user_a==user_b
+      render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
+    end
+
+    # user_a と user_b のどちらが A_user_id または B_user_id に該当するかを確認
+    @friend = Friend.find_by(A_user_id: user_a, B_user_id: user_b) || Friend.find_by(A_user_id: user_b, B_user_id: user_a)
+    
+    #friendレコードの存在確認、存在してたら該当レコードを削除
+    if @friend
+      @friend.destroy
+      render json: { message: 'Friend relationship deleted' }, status: :ok
+    else
+      render json: { error: 'Friend relationship not found' }, status: :not_found
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_friend
-      @friend = Friend.find(params[:id])
-    end
-
     # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:A_user_id, :B_user_id)

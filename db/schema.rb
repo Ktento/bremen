@@ -65,10 +65,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
 
   create_table "user_tracks", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "group_id", null: false
+    t.bigint "tracks_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_user_tracks_on_group_id"
+    t.index ["tracks_id"], name: "index_user_tracks_on_tracks_id"
     t.index ["user_id"], name: "index_user_tracks_on_user_id"
   end
 
@@ -84,6 +84,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   add_foreign_key "group_tracks", "tracks"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
-  add_foreign_key "user_tracks", "groups"
+  add_foreign_key "user_tracks", "tracks", column: "tracks_id"
   add_foreign_key "user_tracks", "users"
 end

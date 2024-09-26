@@ -1,6 +1,17 @@
 class GroupUsersController < ApplicationController
   before_action :set_group_user, only: %i[ show update destroy ]
 
+  # POST /group_users
+  def invite
+    @group_user = GroupUser.new(group_user_params)
+
+    if @group_user.save
+      render json: @group_user, status: :created, location: @group_user
+    else
+      render json: @group_user.errors, status: :unprocessable_entity
+    end
+  end
+
   # GET /group_users
   def index
     @group_users = GroupUser.all
@@ -13,16 +24,6 @@ class GroupUsersController < ApplicationController
     render json: @group_user
   end
 
-  # POST /group_users
-  def create
-    @group_user = GroupUser.new(group_user_params)
-
-    if @group_user.save
-      render json: @group_user, status: :created, location: @group_user
-    else
-      render json: @group_user.errors, status: :unprocessable_entity
-    end
-  end
 
   # PATCH/PUT /group_users/1
   def update

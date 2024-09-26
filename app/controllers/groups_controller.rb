@@ -8,9 +8,9 @@ class GroupsController < ApplicationController
 
      group = Group.find_by(group_name: group_name)
 
-  if group
+  if group_name.blank?
 
-    render json: { error: "Group already exists" }, status: :unauthorized
+    render json: { error: "Group name is null" }, status: :unprocessable_entity
 
   else
 

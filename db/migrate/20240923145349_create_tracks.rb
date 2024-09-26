@@ -7,6 +7,8 @@ class CreateTracks < ActiveRecord::Migration[7.0]
       t.string :spotify_url
       t.string :youtube_url
       t.string :image_url
+      t.string :sp_track_id
+      t.string :sp_artist_id
 
       t.timestamps
     end

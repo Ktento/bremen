@@ -22,6 +22,20 @@ class UsersController < ApplicationController
         render json: @user.errors, status: :unprocessable_entity
       end      
     end
+  end
+
+  #GET /users/login
+  def login
+    user_id=params[:user_id]
+    password=params[:password]
+
+    user=User.find_by(user_id: user_id)
+    
+    if user && user.authenticate(password)
+      render json: { message: "Login successful", user: user }, status: :ok
+    else
+      render json: { error: "Invalid user ID or password" }, status: :unauthorized
+    end
 
   end
 
@@ -59,6 +73,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:user_id, :user_name, :user_pass)
+      params.require(:user).permit(:user_id, :user_name, :password, :password_confirmation)
     end
 end

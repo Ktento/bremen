@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       post 'signup'  # POST /users/signup
+      get  'login'   # GET  /users/login
     end
   end
   resources :groups do

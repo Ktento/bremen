@@ -89,6 +89,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   add_foreign_key "group_tracks", "tracks"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
-  add_foreign_key "user_tracks", "tracks"
+  add_foreign_key "user_tracks", "tracks", column: "track_id"
   add_foreign_key "user_tracks", "users"
 end

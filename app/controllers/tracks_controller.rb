@@ -21,8 +21,16 @@ class TracksController < ApplicationController
       if tracks.any?
         render json: tracks.map { |track| 
           {
+            id: track.id, # トラックのIDを追加
             track_name: track.name,
-            artists: track.artists.map(&:name),
+
+            artists: track.artists.map { |artist| 
+              { 
+                id: artist.id # アーティストのIDを追加
+                name: artist.name, 
+              }
+            },
+
             album: track.album.name
             image_url: track.album.images.first['url'] # 画像URL
           } 

@@ -19,6 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.bigint "B_user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["A_user_id", "B_user_id"], name: "index_friends_on_A_user_id_and_B_user_id", unique: true
     t.index ["A_user_id"], name: "index_friends_on_A_user_id"
     t.index ["B_user_id"], name: "index_friends_on_B_user_id"
   end
@@ -88,6 +89,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   add_foreign_key "group_tracks", "tracks"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
-  add_foreign_key "user_tracks", "tracks"
+  add_foreign_key "user_tracks", "tracks", column: "track_id"
   add_foreign_key "user_tracks", "users"
 end

@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.integer "listen_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["group_id", "track_id"], name: "index_group_tracks_on_group_id_and_track_id", unique: true
     t.index ["group_id"], name: "index_group_tracks_on_group_id"
     t.index ["track_id"], name: "index_group_tracks_on_track_id"
   end
@@ -40,6 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id", "group_id"], name: "index_group_users_on_user_id_and_group_id", unique: true
     t.index ["user_id"], name: "index_group_users_on_user_id"
   end
 
@@ -74,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["track_id"], name: "index_user_tracks_on_track_id"
+    t.index ["user_id", "track_id"], name: "index_user_tracks_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_user_tracks_on_user_id"
   end
 
@@ -91,6 +94,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   add_foreign_key "group_tracks", "tracks"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
-  add_foreign_key "user_tracks", "tracks", column: "track_id"
+  add_foreign_key "user_tracks", "tracks"
   add_foreign_key "user_tracks", "users"
 end

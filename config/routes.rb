@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :friends do
     collection do
       get 'show' # GET /friends/show
+      post 'add' # POST /friends/add
     end
   end
 end

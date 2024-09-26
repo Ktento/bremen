@@ -1,20 +1,19 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[ show update destroy ]
 
-  # GET /groups
-  def index
-    @groups = Group.all
-
-    render json: @groups
-  end
-
-  # GET /groups/1
-  def show
-    render json: @group
-  end
 
   # POST /groups
-  def create
+  def insert
+     group_name = group_params[:group_name]
+
+     group = Group.find_by(group_name: group_name)
+
+  if group
+
+    render json: { error: "Group already exists" }, status: :unauthorized
+
+  else
+
     @group = Group.new(group_params)
 
     if @group.save
@@ -22,6 +21,19 @@ class GroupsController < ApplicationController
     else
       render json: @group.errors, status: :unprocessable_entity
     end
+  end
+end
+
+# GET /groups
+  def index
+    @groups = Group.all
+
+    render json: @groups
+  end
+
+# GET /groups/1
+  def show
+    render json: @group
   end
 
   # PATCH/PUT /groups/1

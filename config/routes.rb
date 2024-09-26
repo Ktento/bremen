@@ -10,6 +10,11 @@ Rails.application.routes.draw do
       post 'signup'  # POST /users/signup
     end
   end
+  resources :groups do
+    collection do
+      post 'insert'
+    end
+  end
   resources :friends do
     collection do
       get 'show' # GET /friends/show

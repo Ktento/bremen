@@ -15,7 +15,14 @@ class TracksController < ApplicationController
 
   # GET /tracks/search?track_name=曲名 で、検索候補を返すことができるよう作成中　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   def search
-    track_name = params[:track_name]
+    track_name = params[:track_name].strip # (.strip)空白や改行を取り除く
+
+    # 曲名が正しく入力されているか確認
+    if track_name.blank?
+      render json: { error: '曲名を入力してください' }, status: :bad_request
+      return
+    end
+    
   
     begin
       # Spotify APIの認証
@@ -26,6 +33,9 @@ class TracksController < ApplicationController
   
       # 曲を検索
       tracks = RSpotify::Track.search(track_name)
+      puts tracks.inspect # 追加:検索結果を確認
+      puts params[:track_name] # 追加: パラメータの確認
+
        
       # 結果があれば返す
       if tracks.any?

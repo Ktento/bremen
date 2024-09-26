@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
 
   if group_name.blank?
 
-    render json: { error: "Group name is null" }, status: :unprocessable_entity
+    render json: { error: "Group name can't be blank" }, status: :unprocessable_entity
 
   else
 

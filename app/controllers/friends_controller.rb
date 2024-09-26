@@ -1,19 +1,25 @@
 class FriendsController < ApplicationController
   # GET /friends
-  def index
-    @friends = Friend.all
+  # def index
+  #   @friends = Friend.all
 
-    render json: @friends
-  end
+  #   render json: @friends
+  # end
 
   # GET /friends/show
   #フレンドのリストを返す関数
   def show
     # user_id をリクエストから取得
-    user_id = friend_show_params[:serach_user_id]
+    user_id = friend_show_params[:search_user_id].to_i
+    # 無効なIDのチェック
+    if user_id<=0
+      render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
+    end
     #user_idからfriendのリストを取得
-    if @friend=Friend.where(A_user_id: user_id).or(Friend.where(B_user_id: user_id))
-      render json: @friend
+    @friends=Friend.where(A_user_id: user_id).or(Friend.where(B_user_id: user_id))
+    # フレンドが一人以上の場合はそのリストを返す
+    if @friends.any?
+      render json: @friends
     else
       render json: { error: 'No friends found' }, status: :unprocessable_entity
     end
@@ -25,7 +31,7 @@ class FriendsController < ApplicationController
     user_b = friend_params[:B_user_id].to_i  
 
     #無効なIDのチェック
-    if user_a<0||user_b<0||user_a==user_b
+    if user_a<=0||user_b<=0||user_a==user_b
       render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
     end
     #それぞれのuser_idから小さい方をA_user_idに設定(UNIQ制約をAとBに持たせているが順不同ははじけないため)
@@ -50,7 +56,7 @@ class FriendsController < ApplicationController
     user_b = friend_params[:B_user_id].to_i  
 
     #無効なIDのチェック
-    if user_a<0||user_b<0||user_a==user_b
+    if user_a<=0||user_b<=0||user_a==user_b
       render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
     end
 
@@ -73,6 +79,6 @@ class FriendsController < ApplicationController
     end
 
     def friend_show_params
-      params.require(:friend).permit(:serach_user_id)
+      params.require(:friend).permit(:search_user_id)
     end
 end

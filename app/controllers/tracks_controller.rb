@@ -43,7 +43,7 @@ class TracksController < ApplicationController
     end
   end
 
-  # POST /tracks  トラックIDとyoutubeURLから曲を検索し、DBに登録する処理を作成中
+  # POST /tracks
   def create
     track_id = params[:track_id]
 
@@ -61,8 +61,8 @@ class TracksController < ApplicationController
       track = RSpotify::Track.find(track_id)
 
       # 複数アーティストの名前とIDを取得し、カンマ区切りで保存
-      artist_names = track.artists.map(&:name).join(", ")
-      artist_ids = track.artists.map(&:id).join(", ")
+      artist_names = track.artists.map(&:name).join(",")
+      artist_ids = track.artists.map(&:id).join(",")
 
       # アーティストが持つジャンルを結合
       artist_genres = track.artists.flat_map(&:genres).uniq.join(", ")
@@ -73,16 +73,25 @@ class TracksController < ApplicationController
         return
       end
 
+      puts track.name
+      puts artist_names
+      puts artist_genres
+      puts track.external_urls['spotify']
+      puts params[:youtube_url]
+      puts track.album.images.first['url']
+      puts track.id
+      puts artist_ids
+
       # データベースに曲を保存
       @track = Track.new(
         track_name: track.name,
-        track_artist: artist.name, # アーティスト名を保存
-        track_category: artist_genres, # アーティストのジャンルを保存
+        track_artist: artist_names, # 全アーティスト名を保存
+        track_category: artist_genres, # 全アーティストのジャンルを結合して保存
         spotify_url: track.external_urls['spotify'],
-        youtube_url: params[:youtube_url] || nil, # YouTube URLがあれば使用、なければnull
+        youtube_url: params[:youtube_url], # YouTube URLを保存
         image_url: track.album.images.first['url'],
         sp_track_id: track.id, # トラックIDを保存
-        sp_artist_id: artist.id # アーティストIDを保存
+        sp_artist_id: artist_ids # 全アーティストのIDをカンマ区切りで保存
       )
 
       if @track.save
@@ -90,10 +99,13 @@ class TracksController < ApplicationController
       else
         render json: @track.errors, status: :unprocessable_entity
       end
+    rescue RSpotify::NotFound
+      render json: { error: "指定されたトラックが見つかりませんでした。" }, status: :not_found
     rescue StandardError => e
       render json: { error: e.message }, status: :internal_server_error
     end
   end
+
 
 
   # PATCH/PUT /tracks/1

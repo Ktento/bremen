@@ -1,6 +1,7 @@
 class TracksController < ApplicationController
-  # GET /tracks/search?track_name=曲名 で、検索候補を返すことができるよう作成中　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-  def search
+
+  # GET /tracks/search?track_name=曲名 　検索内容の候補を返す
+  def search 
     track_name = params[:track_name].strip # (.strip)空白や改行を取り除く
     # 曲名が正しく入力されているか確認
     if track_name.blank?
@@ -23,6 +24,7 @@ class TracksController < ApplicationController
             track_name: track.name,
             artists: track.artists.map(&:name),
             album: track.album.name
+            image_url: track.album.images.first['url'] # 画像URL
           } 
         }
       else

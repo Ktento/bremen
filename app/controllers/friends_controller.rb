@@ -10,7 +10,7 @@ class FriendsController < ApplicationController
   #フレンドのリストを返す関数
   def show
     # user_id をリクエストから取得
-    user_id = friend_show_params[:search_user_id].to_i
+    user_id = params[:search_user_id].to_i
     # 無効なIDのチェック
     if user_id<=0
       render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
@@ -25,6 +25,7 @@ class FriendsController < ApplicationController
     end
   end
 
+  # POST /friends/add 
   def add
     #bodyからuser_idの取り出し
     user_a = friend_params[:A_user_id].to_i
@@ -50,6 +51,7 @@ class FriendsController < ApplicationController
     end
   end
 
+  # DELETE /friends/del
   def del
     #bodyからuser_idの取り出し
     user_a = friend_params[:A_user_id].to_i
@@ -76,9 +78,5 @@ class FriendsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def friend_params
       params.require(:friend).permit(:A_user_id, :B_user_id)
-    end
-
-    def friend_show_params
-      params.require(:friend).permit(:search_user_id)
     end
 end

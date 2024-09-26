@@ -1,10 +1,10 @@
 class FriendsController < ApplicationController
   # GET /friends
-  def index
-    @friends = Friend.all
+  # def index
+  #   @friends = Friend.all
 
-    render json: @friends
-  end
+  #   render json: @friends
+  # end
 
   # GET /friends/show
   #フレンドのリストを返す関数

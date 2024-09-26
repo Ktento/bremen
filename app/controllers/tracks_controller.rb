@@ -1,41 +1,20 @@
 class TracksController < ApplicationController
-  before_action :set_track, only: %i[ show update destroy ]
-
-  # GET /tracks
-  def index
-    @tracks = Track.all
-
-    render json: @tracks
-  end
-
-  # GET /tracks/1
-  def show
-    render json: @track
-  end
-
   # GET /tracks/search?track_name=曲名 で、検索候補を返すことができるよう作成中　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
   def search
     track_name = params[:track_name].strip # (.strip)空白や改行を取り除く
-
     # 曲名が正しく入力されているか確認
     if track_name.blank?
       render json: { error: '曲名を入力してください' }, status: :bad_request
       return
     end
-    
   
     begin
       # Spotify APIの認証
       RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
-        
       # 結果を日本語で取得
       ENV['ACCEPT_LANGUAGE'] = "ja"
-  
       # 曲を検索
       tracks = RSpotify::Track.search(track_name)
-      puts tracks.inspect # 追加:検索結果を確認
-      puts params[:track_name] # 追加: パラメータの確認
-
        
       # 結果があれば返す
       if tracks.any?
@@ -53,7 +32,6 @@ class TracksController < ApplicationController
       render json: { error: e.message }, status: :internal_server_error
     end
   end
-  # ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
   # POST /tracks
   def create

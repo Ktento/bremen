@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     collection do
       get 'show' # GET /friends/show
       post 'add' # POST /friends/add
+      delete 'del' # DELETE /friends/del
     end
   end
 end

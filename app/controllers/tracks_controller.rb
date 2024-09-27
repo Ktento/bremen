@@ -59,7 +59,14 @@ class TracksController < ApplicationController
 
     # 空白でないかチェック
     if track_id.blank?
-      render json: { error: 'トラックIDを指定してください' }, status: :bad_request
+      render json: { error: "トラックIDを指定してください。" }, status: :bad_request
+      return
+    end
+
+    # 既存のトラックを確認
+    existing_track = Track.find_by(sp_track_id: track_id)
+    if existing_track
+      render json: { message: "この曲は既に登録されています。", track: existing_track }, status: :conflict
       return
     end
 

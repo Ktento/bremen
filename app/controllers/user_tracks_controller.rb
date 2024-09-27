@@ -15,7 +15,17 @@ class UserTracksController < ApplicationController
 
   # POST /user_tracks/add お気に入り曲の登録
   def add
-    @user_track = UserTrack.new(user_track_params)
+
+    # user_idでユーザーを検索
+    user = User.find_by(user_id: user_track_params[:user_id])
+
+    # userが存在しなかったときの処理
+    if user.nil?
+      render json: { error: "User not found" }, status: :unprocessable_entity
+      return
+    end
+
+    @user_track = UserTrack.new(user_id: user.user_id, track_id: user_track_params[:track_id])
 
     if @user_track.save
       render json: @user_track, status: :created, location: @user_track
@@ -37,6 +47,6 @@ class UserTracksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_track_params
-      params.require(:user_track).permit(:user_id, :group_id)
+      params.require(:user_track).permit(:user_id, :track_id)
     end
 end

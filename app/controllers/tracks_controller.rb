@@ -43,10 +43,13 @@ class TracksController < ApplicationController
     end
   end
 
-  # POST /tracks
-  def create
-    track_id = params[:track_id]
+  # POST /tracks/add
+  def add
+    
+    track_id = track_params[:track_id]
 
+
+    # 空白でないかチェック
     if track_id.blank?
       render json: { error: 'トラックIDを指定してください' }, status: :bad_request
       return

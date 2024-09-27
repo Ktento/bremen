@@ -22,4 +22,11 @@ Rails.application.routes.draw do
       delete 'del' # DELETE /friends/del
     end
   end
+
+  resources :group_users do
+    collection do
+      post 'invite'
+    end
+  end
+  
 end

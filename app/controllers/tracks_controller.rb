@@ -1,5 +1,4 @@
 class TracksController < ApplicationController
-  before_action :set_post, only: [ :show, :update, :destroy ]
 
   # GET /tracks/search?track_name=曲名 　検索内容の候補を返す
   def search 
@@ -17,6 +16,7 @@ class TracksController < ApplicationController
       ENV['ACCEPT_LANGUAGE'] = "ja"
       # 曲を検索
       tracks = RSpotify::Track.search(track_name)
+
        
       # 結果があれば返す
       if tracks.any?
@@ -47,8 +47,8 @@ class TracksController < ApplicationController
   # POST /tracks/add
   def add
     
-    track_id = track_params[:track_id]
-    youtube_url = track_params[:youtube_url] # 同様にyoutube_urlを取得（もしあれば）
+    track_id = add_track_params[:track_id]
+    youtube_url = add_track_params[:youtube_url] # 同様にyoutube_urlを取得（もしあれば）
 
 
     # 空白でないかチェック
@@ -61,7 +61,6 @@ class TracksController < ApplicationController
       # Spotify APIの認証
       RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
       ENV['ACCEPT_LANGUAGE'] = "ja"
-
       # Spotifyからトラック情報を取得
       track = RSpotify::Track.find(track_id)
 
@@ -86,6 +85,7 @@ class TracksController < ApplicationController
       puts track.album.images.first['url']
       puts track.id
       puts artist_ids
+
 
       # データベースに曲を保存
       @track = Track.new(
@@ -136,5 +136,9 @@ class TracksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def track_params
       params.require(:track).permit(:track_name, :track_category, :track_artist, :spotify_url, :youtube_url, :image_url)
+    end
+
+    def add_track_params
+      params.require(:track).permit(:track_id,:youtube_url)
     end
 end

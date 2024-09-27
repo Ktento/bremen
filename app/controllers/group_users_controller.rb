@@ -14,24 +14,31 @@ class GroupUsersController < ApplicationController
 
       render json: { error: "Value is null" }, status: :unauthorized
 
+  
     else
 
-    @group_user = GroupUser.new(group_user_params)
+      @group_user = GroupUser.new(group_user_params)
 
-    if @group_user.save
-      render json: @group_user, status: :created, location: @group_user
-    else
-      render json: @group_user.errors, status: :unprocessable_entity
+      if @group_user.save
+      
+        render json: @group_user, status: :created, location: @group_user
+
+      else
+
+        render json: @group_user.errors, status: :unprocessable_entity
+
+      end
+
     end
-  end
+
 end
 
   # GET /group_users
-  def index
-    @group_users = GroupUser.all
+# #  def index
+#     @group_users = GroupUser.all
 
-    render json: @group_users
-  end
+#     render json: @group_users
+#   end
 
   # GET /group_users/1
   def show

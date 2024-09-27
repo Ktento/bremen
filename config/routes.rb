@@ -29,4 +29,10 @@ Rails.application.routes.draw do
       post 'add' #POST /group_tracks/add
     end
   end
+  resources :group_users do
+    collection do
+      post 'invite'
+    end
+  end
+  
 end

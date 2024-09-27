@@ -1,6 +1,31 @@
 class GroupUsersController < ApplicationController
   before_action :set_group_user, only: %i[ show update destroy ]
 
+  # POST /group_users
+  def invite
+
+    user_id = group_user_params[:user_id]
+    group_id = group_user_params[:group_id]
+    
+    group_id_search = GroupUser.find_by(group_id: group_id)
+    user_id_search = GroupUser.find_by(user_id: user_id)
+
+    if user_id.blank? || group_id.blank?
+
+      render json: { error: "Value is null" }, status: :unauthorized
+
+    else
+
+    @group_user = GroupUser.new(group_user_params)
+
+    if @group_user.save
+      render json: @group_user, status: :created, location: @group_user
+    else
+      render json: @group_user.errors, status: :unprocessable_entity
+    end
+  end
+end
+
   # GET /group_users
   def index
     @group_users = GroupUser.all
@@ -13,16 +38,6 @@ class GroupUsersController < ApplicationController
     render json: @group_user
   end
 
-  # POST /group_users
-  def create
-    @group_user = GroupUser.new(group_user_params)
-
-    if @group_user.save
-      render json: @group_user, status: :created, location: @group_user
-    else
-      render json: @group_user.errors, status: :unprocessable_entity
-    end
-  end
 
   # PATCH/PUT /group_users/1
   def update
@@ -46,6 +61,6 @@ class GroupUsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def group_user_params
-      params.require(:group_user).permit(:user_id_id, :group_id_id)
+      params.require(:group_user).permit(:user_id, :group_id)
     end
 end

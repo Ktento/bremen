@@ -8,13 +8,13 @@ class UserTracksController < ApplicationController
   #   render json: @user_tracks
   # end
 
-  # GET /user_tracks/1
-  def show
-    render json: @user_track
-  end
+  # # GET /user_tracks/1
+  # def show
+  #   render json: @user_track
+  # end
 
-  # POST /user_tracks
-  def create
+  # POST /user_tracks/add お気に入り曲の登録
+  def add
     @user_track = UserTrack.new(user_track_params)
 
     if @user_track.save
@@ -24,19 +24,10 @@ class UserTracksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /user_tracks/1
-  def update
-    if @user_track.update(user_track_params)
-      render json: @user_track
-    else
-      render json: @user_track.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /user_tracks/1
-  def destroy
-    @user_track.destroy
-  end
+  # # DELETE /user_tracks/1
+  # def destroy
+  #   @user_track.destroy
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

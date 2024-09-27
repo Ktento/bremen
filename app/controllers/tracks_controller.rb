@@ -1,5 +1,11 @@
 class TracksController < ApplicationController
 
+  # GET /tracks
+  # def index
+  #   @track = Track.all
+
+  #   render json: @track
+  # end
   # GET /tracks/search?track_name=曲名 　検索内容の候補を返す
   def search 
     track_name = params[:track_name].strip # (.strip)空白や改行を取り除く

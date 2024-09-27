@@ -23,4 +23,10 @@ Rails.application.routes.draw do
       delete 'del' # DELETE /friends/del
     end
   end
+
+  resources :group_tracks do
+    collection do
+      post 'add' #POST /group_tracks/add
+    end
+  end
 end

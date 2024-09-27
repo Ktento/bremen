@@ -24,12 +24,12 @@ class GroupsController < ApplicationController
   end
 end
 
-# GET /groups
-  def index
-    @groups = Group.all
+# # GET /groups
+#   def index
+#     @groups = Group.all
 
-    render json: @groups
-  end
+#     render json: @groups
+#   end
 
 # GET /groups/1
   def show

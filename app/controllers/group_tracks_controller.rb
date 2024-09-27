@@ -1,41 +1,27 @@
 class GroupTracksController < ApplicationController
-  before_action :set_group_track, only: %i[ show update destroy ]
+  def add
+    # group_id,track_id をリクエストから取得
+    group_id = group_track_params[:group_id].to_i
+    track_id = group_track_params[:track_id].to_i
 
-  # GET /group_tracks
-  def index
-    @group_tracks = GroupTrack.all
 
-    render json: @group_tracks
-  end
+    #無効なIDのチェック
+    if group_id<=0||track_id<=0
+      render json: { error: 'Invalid group IDs or track IDs' }, status: :unprocessable_entity and return
+    end
 
-  # GET /group_tracks/1
-  def show
-    render json: @group_track
-  end
+    #既に存在しないかの確認
+    if GroupTrack.exists?(group_id: group_id, track_id: track_id)
+      render json: { error: 'This track already exists for the group' }, status: :conflict and return
+    end
 
-  # POST /group_tracks
-  def create
     @group_track = GroupTrack.new(group_track_params)
-
     if @group_track.save
       render json: @group_track, status: :created, location: @group_track
     else
       render json: @group_track.errors, status: :unprocessable_entity
-    end
-  end
+    end      
 
-  # PATCH/PUT /group_tracks/1
-  def update
-    if @group_track.update(group_track_params)
-      render json: @group_track
-    else
-      render json: @group_track.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /group_tracks/1
-  def destroy
-    @group_track.destroy
   end
 
   private
@@ -46,6 +32,6 @@ class GroupTracksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def group_track_params
-      params.require(:group_track).permit(:Group_id, :Track_id, :listen_count)
+      params.require(:group_track).permit(:group_id, :track_id)
     end
 end

@@ -1,4 +1,5 @@
 class TracksController < ApplicationController
+  before_action :set_post, only: [ :show, :update, :destroy ]
 
   # GET /tracks/search?track_name=曲名 　検索内容の候補を返す
   def search 
@@ -47,6 +48,7 @@ class TracksController < ApplicationController
   def add
     
     track_id = track_params[:track_id]
+    youtube_url = track_params[:youtube_url] # 同様にyoutube_urlを取得（もしあれば）
 
 
     # 空白でないかチェック
@@ -80,7 +82,7 @@ class TracksController < ApplicationController
       puts artist_names
       puts artist_genres
       puts track.external_urls['spotify']
-      puts params[:youtube_url]
+      puts youtube_url
       puts track.album.images.first['url']
       puts track.id
       puts artist_ids
@@ -91,7 +93,7 @@ class TracksController < ApplicationController
         track_artist: artist_names, # 全アーティスト名を保存
         track_category: artist_genres, # 全アーティストのジャンルを結合して保存
         spotify_url: track.external_urls['spotify'],
-        youtube_url: params[:youtube_url], # YouTube URLを保存
+        youtube_url: youtube_url, # YouTube URLを保存
         image_url: track.album.images.first['url'],
         sp_track_id: track.id, # トラックIDを保存
         sp_artist_id: artist_ids # 全アーティストのIDをカンマ区切りで保存

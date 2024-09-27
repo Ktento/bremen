@@ -46,6 +46,6 @@ class UserTracksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_track_params
-      params.require(:user_track).permit(:User_id, :Group_id)
+      params.require(:user_track).permit(:user_id, :group_id)
     end
 end

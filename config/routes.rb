@@ -33,7 +33,8 @@ Rails.application.routes.draw do
   resources :group_users do
     collection do
       post 'invite'
+      get 'get_group_by_user'
+      get 'get_user_by_group'
     end
   end
-  
 end

@@ -51,11 +51,38 @@ class TracksController < ApplicationController
     end
   end
 
+  # GET /tracks/show?track_id=トラックID　　track_idから曲の情報を返す関数
+  def show
+    track_id = params[:track_id].to_i
+
+    # トラックIDが入力されているか確認
+    if track_id.blank?
+      render json: { error: 'トラックIDを入力してください' }, status: :bad_request
+      return
+    end
+
+    begin
+      # データベースからトラックを検索
+      @tracks = Track.find(track_id)
+
+      if @tracks
+        # トラック情報をJSONで返す
+        render json: @tracks
+      else
+        render json: { message: "トラックが見つかりませんでした。" }, status: :not_found
+      end
+
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "指定されたIDのトラックは存在しません。" }, status: :not_found
+    end
+  end
+
+
   # POST /tracks/add
   def add
     
     track_id = add_track_params[:track_id]
-    youtube_url = add_track_params[:youtube_url] # 同様にyoutube_urlを取得（もしあれば）
+    youtube_url = add_track_params[:youtube_url] # youtube_urlを取得
 
 
     # 空白でないかチェック
@@ -118,14 +145,13 @@ class TracksController < ApplicationController
       else
         render json: @track.errors, status: :unprocessable_entity
       end
+      
     rescue RSpotify::NotFound
       render json: { error: "指定されたトラックが見つかりませんでした。" }, status: :not_found
     rescue StandardError => e
       render json: { error: e.message }, status: :internal_server_error
     end
   end
-
-
 
   # PATCH/PUT /tracks/1
   def update

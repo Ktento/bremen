@@ -41,13 +41,9 @@ class UsersController < ApplicationController
 
   def search
     # user_id をリクエストから取得
-    user_id = params[:search_user_id].to_i
-    # 無効なIDのチェック
-    if user_id<=0
-      render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return
-    end
+    user_id = params[:search_user_id]
     #user_idからuserのリストを取得
-    @users=User.where(user_id: user_id).select(:user_id, :user_name)
+    @users=User.where(user_id: user_id).select(:id,:user_id, :user_name)
     # フレンドが一人以上の場合はそのリストを返す
     if @users.any?
       render json: @users
@@ -64,9 +60,9 @@ class UsersController < ApplicationController
   # end
 
   # GET /users/1
-  def show
-    render json: @user
-  end
+  # def show
+  #   render json: @user
+  # end
 
   # PATCH/PUT /users/1
   def update

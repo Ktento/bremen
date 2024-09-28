@@ -30,14 +30,15 @@ Rails.application.routes.draw do
   resources :group_tracks do
     collection do
       post 'add' #POST /group_tracks/add
-      get 'findtrack'
+      get 'findtrack' #GET /group_tracks/findtrack
+      put 'countoflisten' #PUT /group_tracks/countoflisten
     end
   end
   resources :group_users do
     collection do
-      post 'invite'
-      get 'get_group_by_user'
-      get 'get_user_by_group'
+      post 'invite' #POST /group_users/invite
+      get 'get_group_by_user' #GET /group_users/get_group_by_user
+      get 'get_user_by_group' #GET /group_users/get_user_by_group
     end
   end
   resources :user_tracks do

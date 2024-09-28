@@ -69,10 +69,10 @@ class GroupUsersController < ApplicationController
 
 
 
-  # GET /group_users/1
-  def show
-    render json: @group_user
-  end
+  # # GET /group_users/1
+  # def show
+  #   render json: @group_user
+  # end
 
 
   # PATCH/PUT /group_users/1

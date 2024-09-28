@@ -2,7 +2,7 @@ class GroupTracksController < ApplicationController
 
   def findtrack
     group_track_id = params[:group_track_result]
-    @group_track_list = GroupUser.find_by(group_id: group_track_id)
+    @group_track_list = GroupTrack.find_by(group_id: group_track_id)
 
     if @group_track_list
 
@@ -40,6 +40,16 @@ class GroupTracksController < ApplicationController
     end      
 
   end
+
+  # def show
+  #   render json: @user
+  # end
+
+    # def index
+    #   @group_track = GroupTrack.all
+  
+    #    render json: @group_track
+    # end
 
   private
     # Use callbacks to share common setup or constraints between actions.

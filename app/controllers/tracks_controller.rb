@@ -1,11 +1,11 @@
 class TracksController < ApplicationController
 
   # # GET /tracks
-  # def index
-  #   @track = Track.all
+  def index
+    @track = Track.all
 
-  #   render json: @track
-  # end
+    render json: @track
+  end
 
   # GET /tracks/search?track_name=曲名 　検索内容の候補を返す
   def search 
@@ -50,6 +50,7 @@ class TracksController < ApplicationController
       render json: { error: e.message }, status: :internal_server_error
     end
   end
+
 
   # GET /tracks/show?track_id=トラックID　　track_idから曲の情報を返す関数
   def show
@@ -157,16 +158,34 @@ class TracksController < ApplicationController
     end
   end
 
+  def count_up_listen_track
+
+    listen_add_track_id = count_up_listen_params[:listen_add_track_id]
+
+    @track_addlisten = Track.find_by(id: listen_add_track_id)
 
 
-  # PATCH/PUT /tracks/1
-  def update
-    if @track.update(track_params)
-      render json: @track
+    if @track_addlisten
+
+      @track_addlisten.increment!(:listen_count)  # listen_countを1増やす
+      render json: { message: "Success", listen_count: @track_addlisten.listen_count }, status: :ok
+
     else
-      render json: @track.errors, status: :unprocessable_entity
+
+      render json: { error: "Invaild sp_artist_id or sp_track_id " }, status: :unauthorized
+
     end
   end
+
+
+  # # PATCH/PUT /tracks/1
+  # #def update
+  #   if @track.update(track_params)
+  #     render json: @track
+  #   else
+  #     render json: @track.errors, status: :unprocessable_entity
+  #   end
+  # end
 
   # DELETE /tracks/1
   def destroy
@@ -186,5 +205,9 @@ class TracksController < ApplicationController
 
     def add_track_params
       params.require(:track).permit(:track_id,:youtube_url)
+    end
+
+    def count_up_listen_params
+      params.require(:track).permit(:listen_add_track_id)
     end
 end

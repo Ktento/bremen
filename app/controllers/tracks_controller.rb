@@ -159,9 +159,10 @@ class TracksController < ApplicationController
   end
 
   def count_up_listen_track
-    track_c_name = countup_listen_params[:track_group]
 
-    @track_addlisten = Track.find_by(track_id: track_c_name)
+    listen_add_track_id = count_up_listen_params[:listen_add_track_id]
+
+    @track_addlisten = Track.find_by(id: listen_add_track_id)
 
 
     if @track_addlisten
@@ -206,7 +207,7 @@ class TracksController < ApplicationController
       params.require(:track).permit(:track_id,:youtube_url)
     end
 
-    def countup_listen_params
-      params.require(:track).permit(:track_group)
+    def count_up_listen_params
+      params.require(:track).permit(:listen_add_track_id)
     end
 end

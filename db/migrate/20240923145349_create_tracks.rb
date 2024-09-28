@@ -10,6 +10,8 @@ class CreateTracks < ActiveRecord::Migration[7.0]
       t.string :sp_track_id
       t.string :sp_artist_id
 
+      t.integer :listen_count, default: 0
+
       t.timestamps
     end
   end

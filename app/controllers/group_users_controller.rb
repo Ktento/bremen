@@ -33,10 +33,10 @@ class GroupUsersController < ApplicationController
 
   end
 
-  def get_group_by_user
-    group_user_id = params[:search_group_id]
+  def from_userid_to_groupid
+    user_id = params[:user_id]
 
-    @group_id_search = GroupUser.find_by(group_id: group_user_id)
+    @group_id_search = GroupUser.where(user_id: user_id)
 
     if @group_id_search
       render json: @group_id_search, status: :ok
@@ -46,10 +46,10 @@ class GroupUsersController < ApplicationController
     end
   end
 
-  def get_user_by_group
-    user_group_id = params[:search_user_id]
+  def from_groupid_to_userid
+    group_id = params[:group_id]
 
-    @user_id_search = GroupUser.find_by(user_id: user_group_id)
+    @user_id_search = GroupUser.where(user_id: group_id)
 
     if @user_id_search
       render json: @user_id_search, status: :ok
@@ -60,11 +60,11 @@ class GroupUsersController < ApplicationController
   end
 
   # GET /group_users
-  # def index
-  #   @group_users = GroupUser.all
+  def index
+    @group_users = GroupUser.all
 
-  #   render json: @group_users
-  # end
+    render json: @group_users
+  end
 
 
 

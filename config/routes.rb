@@ -40,8 +40,8 @@ Rails.application.routes.draw do
   resources :group_users do
     collection do
       post 'invite' #POST /group_users/invite
-      get 'get_group_by_user' #GET /group_users/get_group_by_user
-      get 'get_user_by_group' #GET /group_users/get_user_by_group
+      get 'from_userid_to_groupid' #GET /group_users/from_userid_to_groupid
+      get 'from_groupid_to_userid' #GET /group_users/from_userid_to_groupid
     end
   end
   resources :user_tracks do

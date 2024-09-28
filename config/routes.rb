@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       get 'show'    # show /tracks/show
       post 'add'    # POST /tracks/add
       put 'count_up_listen_track' # PUT /tracks/countoflisten_track
-      get 'listencount_orderby' #GET /tracks/listencount_orderby
+      get 'listencount_orderby_track' #GET /tracks/listencount_orderby_track
     end
   end
   resources :users do
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       post 'add' #POST /group_tracks/add
       get 'findtrack' #GET /group_tracks/findtrack
       put 'count_up_listen' #PUT /group_tracks/countoflisten
-      get 'listencount_orderby' #GET /group_users/listencount_orderby
+      get 'listencount_orderby_grouptrack' #GET /group_users/listencount_orderby
       put 'count_up_listen_group' #PUT /group_tracks/countoflisten
     end
   end

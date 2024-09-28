@@ -60,7 +60,7 @@ class GroupTracksController < ApplicationController
   end
 
 
-  def listencount_orderby
+  def listencount_orderby_grouptrack
     @listencount_orderby_result = GroupTrack.order(listen_count: :desc)
 
     render json: @listencount_orderby_result, status: :ok

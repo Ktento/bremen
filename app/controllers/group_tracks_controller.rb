@@ -60,10 +60,10 @@ class GroupTracksController < ApplicationController
   end
 
 
-  def listcount_orderby
-    @listcount_orderby_result = GroupTrack.order(listen_count: :desc)
+  def listencount_orderby
+    @listencount_orderby_result = GroupTrack.order(listen_count: :desc)
 
-    render json: @listcount_orderby_result, status: :ok
+    render json: @listencount_orderby_result, status: :ok
 
   end
 
@@ -96,7 +96,7 @@ class GroupTracksController < ApplicationController
       params.require(:group_track).permit(:listen_add_group_id, :listen_add_track_id)
     end
 
-    def listcount_params
-      params.require(:group_track).permit(:list_count)
+    def listencount_params
+      params.require(:group_track).permit(:listen_count)
     end
 end

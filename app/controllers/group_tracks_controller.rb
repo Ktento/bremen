@@ -2,7 +2,7 @@ class GroupTracksController < ApplicationController
 
   def findtrack
     group_track_id = params[:group_track_result]
-    @group_track_list = GroupTrack.find_by(group_id: group_track_id)
+    @group_track_list = GroupTrack.where(group_id: group_track_id)
 
     if @group_track_list
 

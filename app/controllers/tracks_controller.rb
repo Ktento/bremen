@@ -85,7 +85,7 @@ class TracksController < ApplicationController
   end
 
   def listencount_orderby
-    @listencount_orderby_result = Track.order(listen_count: :desc)
+    @listencount_orderby_result = Track.order(listen_count: :desc).limit(10)
 
     render json: @listencount_orderby_result, status: :ok
 

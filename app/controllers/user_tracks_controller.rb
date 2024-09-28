@@ -14,8 +14,15 @@ class UserTracksController < ApplicationController
     begin
       # リクエストからuser_idを取得
       user_id = params[:user_id].to_i
-      puts user_id
-      puts "aaaaaaaaaa"
+
+      # user_idでユーザーを検索
+      user = UserTrack.find_by(user_id: user_id)
+
+      # ユーザーが見つからなかった場合の処理
+      if user.nil?
+        render json: { error: 'User not found' }, status: :not_found
+        return
+      end
   
       # user_idに紐付いたtrack_idを全て取得
       track_ids = UserTrack.where(user_id: user_id).pluck(:track_id)

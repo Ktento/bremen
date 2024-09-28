@@ -37,4 +37,9 @@ Rails.application.routes.draw do
       get 'get_user_by_group'
     end
   end
+  resources :user_tracks do
+    collection do
+      post 'add' #POST /user_tracks/add
+    end
+  end
 end

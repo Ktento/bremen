@@ -1,12 +1,12 @@
 class UserTracksController < ApplicationController
   before_action :set_user_track, only: %i[ show update destroy ]
 
-  # GET /user_tracks
-  def index
-    @user_tracks = UserTrack.all
+  # # GET /user_tracks
+  # def index
+  #   @user_tracks = UserTrack.all
 
-    render json: @user_tracks
-  end
+  #   render json: @user_tracks
+  # end
 
   # GET /user_tracks/1
   def show

@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :group_tracks do
     collection do
       post 'add' #POST /group_tracks/add
+      get 'findtrack'
     end
   end
   resources :group_users do

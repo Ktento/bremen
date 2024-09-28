@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     collection do
       post 'signup'  # POST /users/signup
       get  'login'   # GET  /users/login
+      get 'search'   # GET /users/search
     end
   end
   resources :groups do

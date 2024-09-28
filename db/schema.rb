@@ -66,6 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.string "image_url"
     t.string "sp_track_id"
     t.string "sp_artist_id"
+    t.integer "listen_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

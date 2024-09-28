@@ -46,8 +46,9 @@ Rails.application.routes.draw do
   end
   resources :user_tracks do
     collection do
-      post 'add' #POST /user_tracks/add
-      get 'show' #GET /user_tracks/show
+      post 'add'    # POST /user_tracks/add
+      get 'show'    # GET /user_tracks/show
+      delete 'del'  # DELETE /user_tracks/del
     end
   end
 end

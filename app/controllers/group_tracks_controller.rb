@@ -15,17 +15,17 @@ class GroupTracksController < ApplicationController
     end
   end
 
-  def countoflisten
-    group_track_c_group = group_track_group_params[:group_track_group]
-    group_track_c_track = group_track_track_params[:group_track_track]
+  def count_up_listen_group
+    listen_add_group_id = countup_listen_params[:listen_add_group_id]
+    listen_add_track_id= countup_listen_params[:listen_add_track_id]
 
-    @super_count_group_track = GroupTrack.find_by(group_id: group_track_c_group, track_id: group_track_c_track)
+    @group_addlisten = GroupTrack.find_by(group_id: listen_add_group_id, track_id: listen_add_track_id)
 
 
-    if @super_count_group_track
+    if @group_addlisten
 
-      @super_count_group_track.increment!(:listen_count)  # listen_countを1増やす
-      render json: { message: "Success", listen_count: @super_count_group_track.listen_count }, status: :ok
+      @group_addlisten.increment!(:listen_count)  # listen_countを1増やす
+      render json: { message: "Success", listen_count: @group_addlisten.listen_count }, status: :ok
 
     else
 
@@ -39,7 +39,7 @@ class GroupTracksController < ApplicationController
     group_id = group_track_params[:group_id].to_i
     track_id = group_track_params[:track_id].to_i
 
-    
+    ount_group_track
 
     #無効なIDのチェック
     if group_id<=0||track_id<=0
@@ -85,11 +85,8 @@ class GroupTracksController < ApplicationController
       params.require(:group_track).permit(:group_track_result)
     end
 
-    def group_track_group_params
-      params.require(:group_track).permit(:group_track_group)
+    def countup_listen_params
+      params.require(:group_track).permit(:listen_add_group_id, :listen_add_track_id)
     end
 
-    def group_track_track_params
-      params.require(:group_track).permit(:group_track_track)
-    end
 end

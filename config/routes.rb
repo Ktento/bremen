@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       get 'search'  # search アクションのためのルートを追加
       get 'show'
       post 'add'    # POST /tracks/add
+      put 'countoflisten_track' # PUT /tracks/countoflisten_track
     end
   end
   resources :users do
@@ -31,7 +32,7 @@ Rails.application.routes.draw do
     collection do
       post 'add' #POST /group_tracks/add
       get 'findtrack' #GET /group_tracks/findtrack
-      put 'countoflisten' #PUT /group_tracks/countoflisten
+      put 'count_up_listen' #PUT /group_tracks/countoflisten
     end
   end
   resources :group_users do

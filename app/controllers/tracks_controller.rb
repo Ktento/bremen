@@ -158,7 +158,7 @@ class TracksController < ApplicationController
     end
   end
 
-  def count_up_listen_truck
+  def count_up_listen_track
     track_c_name = countup_listen_params[:track_group]
 
     @track_addlisten = Track.find_by(track_id: track_c_name)

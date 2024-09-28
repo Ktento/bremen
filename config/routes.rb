@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       get 'search'  # search アクションのためのルートを追加
       get 'show'
       post 'add'    # POST /tracks/add
-      put 'countoflisten_track' # PUT /tracks/countoflisten_track
+      put 'count_up_listen_track' # PUT /tracks/countoflisten_track
     end
   end
   resources :users do

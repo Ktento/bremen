@@ -85,9 +85,32 @@ class UserTracksController < ApplicationController
     end
   end
 
-  # DELETE /user_tracks/1
-  def destroy
-    @user_track.destroy
+  # DELETE /user_tracks/del
+  def del
+    begin
+      # リクエストボディからuser_idとtrack_idを取得
+      user_id = user_track_params[:user_id].to_i
+      track_id = user_track_params[:track_id].to_i
+
+      # user_idとtrack_idに一致するUserTrackを検索
+      user_track = UserTrack.find_by(user_id: user_id, track_id: track_id)
+
+      # レコードが見つからなかった場合の処理
+      if user_track.nil?
+        render json: { error: 'Record not found' }, status: :not_found
+        return
+      end
+
+      # レコードを削除
+      user_track.destroy
+      # 削除成功のメッセージを返す
+      render json: { message: 'Track successfully deleted for this user' }, status: :ok
+    
+    rescue => e
+      # エラーハンドリング
+      render json: { error: e.message }, status: :internal_server_error
+    end
+
   end
 
   private

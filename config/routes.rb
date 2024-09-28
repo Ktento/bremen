@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :tracks do
     collection do
       get 'search'  # search アクションのためのルートを追加
-      get 'show'
+      get 'show'    # show /tracks/show
       post 'add'    # POST /tracks/add
       put 'count_up_listen_track' # PUT /tracks/countoflisten_track
     end
@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :user_tracks do
     collection do
       post 'add' #POST /user_tracks/add
+      get 'show' #GET /user_tracks/show
     end
   end
 end

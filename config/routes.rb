@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   resources :posts
   resources :tracks do
     collection do
-      get 'search'  # search アクションのためのルートを追加
+      get 'search'  # Get /tracks/search
+      get 'show'    # Get /tracks/show
       post 'add'    # POST /tracks/add
     end
   end

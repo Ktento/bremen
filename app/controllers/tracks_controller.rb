@@ -84,6 +84,13 @@ class TracksController < ApplicationController
     end
   end
 
+  def listencount_orderby
+    @listencount_orderby_result = Track.order(listen_count: :desc)
+
+    render json: @listencount_orderby_result, status: :ok
+
+  end
+
   # POST /tracks/add
   def add
     
@@ -178,6 +185,8 @@ class TracksController < ApplicationController
   end
 
 
+
+
   # # PATCH/PUT /tracks/1
   # #def update
   #   if @track.update(track_params)
@@ -209,5 +218,9 @@ class TracksController < ApplicationController
 
     def count_up_listen_params
       params.require(:track).permit(:listen_add_track_id)
+    end
+
+    def listencount_params
+      params.require(:track).permit(:listen_count)
     end
 end

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'show'
       post 'add'    # POST /tracks/add
       put 'count_up_listen_track' # PUT /tracks/countoflisten_track
+      get 'listencount_orderby' #GET /tracks/listencount_orderby
     end
   end
   resources :users do

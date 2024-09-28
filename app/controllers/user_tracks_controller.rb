@@ -1,5 +1,5 @@
 class UserTracksController < ApplicationController
-  before_action :set_user_track, only: %i[ show update destroy ]
+  before_action :set_user_track, only: %i[ update destroy ]
 
   # # GET /user_tracks
   # def index
@@ -9,12 +9,32 @@ class UserTracksController < ApplicationController
   # end
 
 
-  # # GET /user_tracks/1
-  # def show
-  #   render json: @user_track
-  # end
+  # GET /user_tracks/show?user_id=ユーザID　　user_idのユーザに登録されている曲を取得する関数
+  def show
+    begin
+      # リクエストからuser_idを取得
+      user_id = params[:user_id].to_i
+      puts user_id
+      puts "aaaaaaaaaa"
+  
+      # user_idに紐付いたtrack_idを全て取得
+      track_ids = UserTrack.where(user_id: user_id).pluck(:track_id)
+  
+      # track_idが見つからなかった場合の処理
+      if track_ids.empty?
+        render json: { error: 'No tracks found for this user' }, status: :not_found
+        return
+      end
+  
+      # track_idのリストを返す
+      render json: { track_ids: track_ids }, status: :ok
+    rescue => e
+      # エラーハンドリング
+      render json: { error: e.message }, status: :internal_server_error
+    end
+  end
 
-  # POST /user_tracks/add お気に入り曲の登録
+  # POST /user_tracks/add　　お気に入り曲の登録
   def add
 
     # user_id をリクエストから取得

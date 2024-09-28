@@ -12,7 +12,7 @@ class TracksController < ApplicationController
     track_name = params[:track_name].strip # (.strip)空白や改行を取り除く
     # 曲名が正しく入力されているか確認
     if track_name.blank?
-      render json: { error: '曲名を入力してください' }, status: :bad_request
+      render json: { error: 'Please enter a track name' }, status: :bad_request
       return
     end
   
@@ -44,7 +44,7 @@ class TracksController < ApplicationController
           } 
         }
       else
-        render json: { message: "曲が見つかりませんでした。" }, status: :not_found
+        render json: { message: "Tracks not found" }, status: :not_found
       end
     rescue StandardError => e
       render json: { error: e.message }, status: :internal_server_error
@@ -57,13 +57,13 @@ class TracksController < ApplicationController
     begin
       track_id = Integer(params[:track_id])
     rescue ArgumentError
-      render json: { error: '無効なトラックIDです。数値を入力してください。' }, status: :bad_request
+      render json: { error: 'Invalid track ID. Please enter a number' }, status: :bad_request
       return
     end
 
     # トラックIDが空白かどうかを確認
     if track_id.blank?
-      render json: { error: 'トラックIDを入力してください。' }, status: :bad_request
+      render json: { error: 'Please enter a track ID' }, status: :bad_request
       return
     end
 
@@ -75,12 +75,12 @@ class TracksController < ApplicationController
         # トラック情報をJSONで返す
         render json: @track
       else
-        render json: { message: "トラックが見つかりませんでした。" }, status: :not_found
+        render json: { message: "Track not found" }, status: :not_found
       end
     rescue ActiveRecord::RecordNotFound
-      render json: { error: "指定されたIDのトラックは存在しません。" }, status: :not_found
+      render json: { error: "No track exists with the specified ID" }, status: :not_found
     rescue StandardError => e
-      render json: { error: "サーバーエラーが発生しました: #{e.message}" }, status: :internal_server_error
+      render json: { error: "An internal server error occurred: #{e.message}" }, status: :internal_server_error
     end
   end
 
@@ -100,14 +100,14 @@ class TracksController < ApplicationController
 
     # 空白でないかチェック
     if track_id.blank?
-      render json: { error: "トラックIDを指定してください。" }, status: :bad_request
+      render json: { error: "Please specify a track ID" }, status: :bad_request
       return
     end
 
     # 既存のトラックを確認
     existing_track = Track.find_by(sp_track_id: track_id)
     if existing_track
-      render json: { message: "この曲は既に登録されています。", track: existing_track }, status: :conflict
+      render json: { message: "This track is already registered", track: existing_track }, status: :conflict
       return
     end
 
@@ -127,7 +127,7 @@ class TracksController < ApplicationController
 
       # トラックが存在しない場合の処理
       if track.nil?
-        render json: { error: "指定されたトラックが見つかりませんでした。" }, status: :not_found
+        render json: { error: "The specified track was not found" }, status: :not_found
         return
       end
 
@@ -159,7 +159,7 @@ class TracksController < ApplicationController
         render json: @track.errors, status: :unprocessable_entity
       end
     rescue RSpotify::NotFound
-      render json: { error: "指定されたトラックが見つかりませんでした。" }, status: :not_found
+      render json: { error: "The specified track was not found" }, status: :not_found
     rescue StandardError => e
       render json: { error: e.message }, status: :internal_server_error
     end

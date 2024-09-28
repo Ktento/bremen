@@ -15,6 +15,25 @@ class GroupTracksController < ApplicationController
     end
   end
 
+  def countoflisten
+    group_track_c_group = group_track_group_params[:group_track_group]
+    group_track_c_track = group_track_track_params[:group_track_track]
+
+    @super_count_group_track = GroupTrack.find_by(group_id: group_track_c_group, track_id: group_track_c_track)
+
+
+    if @super_count_group_track
+
+      @super_count_group_track.increment!(:listen_count)  # listen_countを1増やす
+      render json: { message: "Success", listen_count: @super_count_group_track.listen_count }, status: :ok
+
+    else
+
+      render json: { error: "Invaild GroupID or TrackID" }, status: :unauthorized
+
+    end
+  end
+
   def add
     # group_id,track_id をリクエストから取得
     group_id = group_track_params[:group_id].to_i
@@ -64,5 +83,13 @@ class GroupTracksController < ApplicationController
 
     def group_track_find
       params.require(:group_track).permit(:group_track_result)
+    end
+
+    def group_track_group_params
+      params.require(:group_track).permit(:group_track_group)
+    end
+
+    def group_track_track_params
+      params.require(:group_track).permit(:group_track_track)
     end
 end

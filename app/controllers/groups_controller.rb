@@ -31,10 +31,11 @@ end
 #     render json: @groups
 #   end
 
-# GET /groups/1
-  def show
-    render json: @group
-  end
+
+# # GET /groups/1
+#   def show
+#     render json: @group
+#   end
 
   # PATCH/PUT /groups/1
   def update

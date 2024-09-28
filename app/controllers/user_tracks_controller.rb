@@ -8,10 +8,11 @@ class UserTracksController < ApplicationController
   #   render json: @user_tracks
   # end
 
-  # GET /user_tracks/1
-  def show
-    render json: @user_track
-  end
+
+  # # GET /user_tracks/1
+  # def show
+  #   render json: @user_track
+  # end
 
   # POST /user_tracks/add お気に入り曲の登録
   def add

@@ -51,6 +51,38 @@ class TracksController < ApplicationController
     end
   end
 
+  # GET /tracks/show?track_id=トラックID　　track_idから曲の情報を返す関数
+  def show
+    begin
+      track_id = Integer(params[:track_id])
+    rescue ArgumentError
+      render json: { error: '無効なトラックIDです。数値を入力してください。' }, status: :bad_request
+      return
+    end
+
+    # トラックIDが空白かどうかを確認
+    if track_id.blank?
+      render json: { error: 'トラックIDを入力してください。' }, status: :bad_request
+      return
+    end
+
+    begin
+      # データベースからトラックを検索
+      @track = Track.find(track_id)
+
+      if @track
+        # トラック情報をJSONで返す
+        render json: @track
+      else
+        render json: { message: "トラックが見つかりませんでした。" }, status: :not_found
+      end
+    rescue ActiveRecord::RecordNotFound
+      render json: { error: "指定されたIDのトラックは存在しません。" }, status: :not_found
+    rescue StandardError => e
+      render json: { error: "サーバーエラーが発生しました: #{e.message}" }, status: :internal_server_error
+    end
+  end
+
   # POST /tracks/add
   def add
     

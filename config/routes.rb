@@ -33,9 +33,8 @@ Rails.application.routes.draw do
     collection do
       post 'add' #POST /group_tracks/add
       get 'findtrack' #GET /group_tracks/findtrack
-      put 'count_up_listen' #PUT /group_tracks/countoflisten
-      get 'listencount_orderby_grouptrack' #GET /group_users/listencount_orderby
-      put 'count_up_listen_group' #PUT /group_tracks/countoflisten
+      get 'listencount_orderby_grouptrack' #GET /group_users/listencount_orderby_grouptrack
+      put 'count_up_listen_group' #PUT /group_tracks/countoflisten_group
     end
   end
   resources :group_users do

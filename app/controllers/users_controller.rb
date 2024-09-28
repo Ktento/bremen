@@ -39,6 +39,19 @@ class UsersController < ApplicationController
 
   end
 
+  def search
+    # user_id をリクエストから取得
+    user_id = params[:search_user_id]
+    #user_idからuserのリストを取得
+    @users=User.where(user_id: user_id).select(:id,:user_id, :user_name)
+    # フレンドが一人以上の場合はそのリストを返す
+    if @users.any?
+      render json: @users
+    else
+      render json: { error: 'No users found' }, status: :unprocessable_entity
+    end
+  end
+
   # # GET /users
   # def index
   #   @users = User.all
@@ -47,9 +60,9 @@ class UsersController < ApplicationController
   # end
 
   # GET /users/1
-  def show
-    render json: @user
-  end
+  # def show
+  #   render json: @user
+  # end
 
   # PATCH/PUT /users/1
   def update

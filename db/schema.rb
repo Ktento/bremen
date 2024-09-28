@@ -27,9 +27,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
   create_table "group_tracks", force: :cascade do |t|
     t.bigint "group_id", null: false
     t.bigint "track_id", null: false
-    t.integer "listen_count"
+    t.integer "listen_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["group_id", "track_id"], name: "index_group_tracks_on_group_id_and_track_id", unique: true
     t.index ["group_id"], name: "index_group_tracks_on_group_id"
     t.index ["track_id"], name: "index_group_tracks_on_track_id"
   end
@@ -40,6 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id", "group_id"], name: "index_group_users_on_user_id_and_group_id", unique: true
     t.index ["user_id"], name: "index_group_users_on_user_id"
   end
 
@@ -62,6 +64,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.string "spotify_url"
     t.string "youtube_url"
     t.string "image_url"
+    t.string "sp_track_id"
+    t.string "sp_artist_id"
+    t.integer "listen_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -72,15 +77,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_152859) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["track_id"], name: "index_user_tracks_on_track_id"
+    t.index ["user_id", "track_id"], name: "index_user_tracks_on_user_id_and_track_id", unique: true
     t.index ["user_id"], name: "index_user_tracks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "user_id"
+    t.string "user_id", null: false
     t.string "user_name"
-    t.string "user_pass"
+    t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_users_on_user_id", unique: true
   end
 
   add_foreign_key "friends", "users", column: "A_user_id"

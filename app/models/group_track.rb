@@ -1,4 +1,4 @@
 class GroupTrack < ApplicationRecord
-  belongs_to :Group
-  belongs_to :Track
+  belongs_to :group
+  belongs_to :track
 end

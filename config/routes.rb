@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       get 'findtrack' #GET /group_tracks/findtrack
       put 'count_up_listen' #PUT /group_tracks/countoflisten
       get 'listencount_orderby' #GET /group_users/listencount_orderby
+      put 'count_up_listen_group' #PUT /group_tracks/countoflisten
     end
   end
   resources :group_users do

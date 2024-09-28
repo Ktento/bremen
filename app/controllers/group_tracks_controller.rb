@@ -39,7 +39,6 @@ class GroupTracksController < ApplicationController
     group_id = group_track_params[:group_id].to_i
     track_id = group_track_params[:track_id].to_i
 
-    ount_group_track
 
     #無効なIDのチェック
     if group_id<=0||track_id<=0

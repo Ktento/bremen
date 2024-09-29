@@ -49,10 +49,10 @@ class GroupUsersController < ApplicationController
   def from_groupid_to_userid
     group_id = params[:group_id]
 
-    @user_id_search = GroupUser.where(user_id: group_id)
+    @group_id_search = GroupUser.where(group_id: group_id)
 
-    if @user_id_search
-      render json: @user_id_search, status: :ok
+    if @group_id_search
+      render json: @group_id_search, status: :ok
     else
       render json: { error: "User not found." }, status: :not_found
 

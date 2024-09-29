@@ -29,8 +29,14 @@ class FriendsController < ApplicationController
   def add
     #bodyからuser_idの取り出し
     user_a = friend_params[:A_user_id].to_i
-    user_b = friend_params[:B_user_id].to_i  
-
+    user_b = friend_params[:B_user_id]
+    user=User.find_by(user_id: user_b)
+    # user が存在するか確認してから user_id を取り出す
+    if user
+      user_b = user.id
+    else
+      render json: { error: 'User not found' }, status: :not_found and return
+    end
     #無効なIDのチェック
     if user_a<=0||user_b<=0||user_a==user_b
       render json: { error: 'Invalid user IDs' }, status: :unprocessable_entity and return

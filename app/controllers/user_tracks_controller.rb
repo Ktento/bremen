@@ -45,7 +45,7 @@ class UserTracksController < ApplicationController
   # POST /user_tracks/add　　お気に入り曲の登録
   def add
     # user_id をリクエストから取得
-    user_id = user_track_params[:user_id].to_i
+    user_id = add_user_track_params[:user_id].to_i
     # user_idでユーザーを検索
     user = User.find_by(id: user_id)
     # userが存在しなかったときの処理
@@ -55,7 +55,7 @@ class UserTracksController < ApplicationController
     end
 
     # sp_track_idをリクエストから取得
-    sp_track_id = user_track_params[:sp_track_id]
+    sp_track_id = add_user_track_params[:sp_track_id]
     #曲がTrackテーブルに存在していない可能性があるので挿入する
     result= add_track(sp_track_id,"")
     #曲の追加を試みた結果すでに存在していた時
@@ -125,7 +125,10 @@ class UserTracksController < ApplicationController
   end
 
   # Only allow a list of trusted parameters through.
-  def user_track_params
+  def add_user_track_params
     params.require(:user_track).permit(:user_id, :sp_track_id)
+  end
+  def user_track_params
+    params.require(:user_track).permit(:user_id, :track_id)
   end
 end

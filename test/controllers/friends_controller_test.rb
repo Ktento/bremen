@@ -1,35 +1,38 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class FriendsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @friend = friends(:one)
   end
 
-  test "should get index" do
+  test 'should get index' do
     get friends_url, as: :json
     assert_response :success
   end
 
-  test "should create friend" do
-    assert_difference("Friend.count") do
+  test 'should create friend' do
+    assert_difference('Friend.count') do
       post friends_url, params: { friend: { A_user_id: @friend.A_user_id, B_user_id: @friend.B_user_id } }, as: :json
     end
 
     assert_response :created
   end
 
-  test "should show friend" do
+  test 'should show friend' do
     get friend_url(@friend), as: :json
     assert_response :success
   end
 
-  test "should update friend" do
-    patch friend_url(@friend), params: { friend: { A_user_id: @friend.A_user_id, B_user_id: @friend.B_user_id } }, as: :json
+  test 'should update friend' do
+    patch friend_url(@friend), params: { friend: { A_user_id: @friend.A_user_id, B_user_id: @friend.B_user_id } },
+                               as: :json
     assert_response :success
   end
 
-  test "should destroy friend" do
-    assert_difference("Friend.count", -1) do
+  test 'should destroy friend' do
+    assert_difference('Friend.count', -1) do
       delete friend_url(@friend), as: :json
     end
 

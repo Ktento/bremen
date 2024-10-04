@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :posts
   resources :tracks do
@@ -6,7 +8,7 @@ Rails.application.routes.draw do
       get 'show'    # show /tracks/show
       post 'add'    # POST /tracks/add
       put 'count_up_listen_track' # PUT /tracks/countoflisten_track
-      get 'listencount_orderby_track' #GET /tracks/listencount_orderby_track
+      get 'listencount_orderby_track' # GET /tracks/listencount_orderby_track
     end
   end
   resources :users do
@@ -31,17 +33,17 @@ Rails.application.routes.draw do
 
   resources :group_tracks do
     collection do
-      post 'add' #POST /group_tracks/add
-      get 'findtrack' #GET /group_tracks/findtrack
-      get 'listencount_orderby_grouptrack' #GET /group_users/listencount_orderby_grouptrack
-      put 'count_up_listen_group' #PUT /group_tracks/countoflisten_group
+      post 'add' # POST /group_tracks/add
+      get 'findtrack' # GET /group_tracks/findtrack
+      get 'listencount_orderby_grouptrack' # GET /group_users/listencount_orderby_grouptrack
+      put 'count_up_listen_group' # PUT /group_tracks/countoflisten_group
     end
   end
   resources :group_users do
     collection do
-      post 'invite' #POST /group_users/invite
-      get 'from_userid_to_groupid' #GET /group_users/from_userid_to_groupid
-      get 'from_groupid_to_userid' #GET /group_users/from_userid_to_groupid
+      post 'invite' # POST /group_users/invite
+      get 'from_userid_to_groupid' # GET /group_users/from_userid_to_groupid
+      get 'from_groupid_to_userid' # GET /group_users/from_userid_to_groupid
     end
   end
   resources :user_tracks do

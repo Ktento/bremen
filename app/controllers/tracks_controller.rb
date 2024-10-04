@@ -104,7 +104,7 @@ class TracksController < ApplicationController
       return
     end
 
-    result=add_track(track_id,youtube_url)
+    result = add_track(track_id,youtube_url)
 
     if result[:success]
       render json: result[:track], status: :created

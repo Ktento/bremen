@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module TrackHelper
+
+  #トラックを追加するメソッド
   def add_track(track_id, youtube_url)
     # 既存のトラックを確認
     existing_track = Track.find_by(sp_track_id: track_id)
@@ -41,6 +43,22 @@ module TrackHelper
       { success: false, message: 'Track not found on Spotify' }
     rescue StandardError => e
       { success: false, message: "An error occurred: #{e.message}" }
+    end
+  end
+
+  #Trackテーブルにsp_track_idで検索をかけ一致するidを返すメソッド
+  def find_id_by_sp_track_id(sp_track_id)
+    # トラックIDが空白かどうかを確認
+    if sp_track_id.blank?
+      return { success: false, id:nil }
+    end
+
+    track = Track.find_by(sp_track_id: sp_track_id)
+
+    if track
+      return { success: true, id:track.id }
+    else
+      return {success:false,id:nil}
     end
   end
 end

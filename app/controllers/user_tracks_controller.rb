@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UserTracksController < ApplicationController
+  include TrackHelper
   before_action :set_user_track, only: %i[update destroy]
 
   # # GET /user_tracks
@@ -53,11 +54,23 @@ class UserTracksController < ApplicationController
       return
     end
 
-    # track_idをリクエストから取得
-    track_id = user_track_params[:track_id].to_i
-    # track_idでトラックを検索
-    Track.find_by(id: track_id)
-    # トラックが存在しなかったときの処理
+    # sp_track_idをリクエストから取得
+    sp_track_id = user_track_params[:sp_track_id]
+    #曲がTrackテーブルに存在していない可能性があるので挿入する
+    result= add_track(sp_track_id,"")
+    #曲の追加を試みた結果すでに存在していた時
+    if result[:message]=="Track already exists"
+      findresult = find_id_by_sp_track_id(sp_track_id)
+      if findresult[:success]
+        track_id=findresult[:id]
+      end
+    #曲がなく曲の追加が成功したとき
+    elsif result[:success]
+      track_id=result[:track].id
+    else
+      render json: { error:result[:message] }, status: :unprocessable_entity
+      return
+    end
 
     # 無効なIDのチェック
     if user_id <= 0 || track_id <= 0
@@ -71,7 +84,7 @@ class UserTracksController < ApplicationController
       return
     end
 
-    @user_track = UserTrack.new(user_track_params)
+    @user_track = UserTrack.new(user_id: user_id, track_id: track_id)
 
     if @user_track.save
       render json: @user_track, status: :created, location: @user_track
@@ -113,6 +126,6 @@ class UserTracksController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_track_params
-    params.require(:user_track).permit(:user_id, :track_id)
+    params.require(:user_track).permit(:user_id, :sp_track_id)
   end
 end

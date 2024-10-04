@@ -94,17 +94,17 @@ class TracksController < ApplicationController
   # POST /tracks/add
   def add
     
-    track_id = add_track_params[:track_id]
+    sp_track_id = add_track_params[:sp_track_id]
     youtube_url = add_track_params[:youtube_url] # 同様にyoutube_urlを取得（もしあれば）
 
 
     # 空白でないかチェック
-    if track_id.blank?
+    if sp_track_id.blank?
       render json: { error: "Please specify a track ID" }, status: :bad_request
       return
     end
 
-    result = add_track(track_id,youtube_url)
+    result = add_track(sp_track_id,youtube_url)
 
     if result[:success]
       render json: result[:track], status: :created
@@ -161,7 +161,7 @@ class TracksController < ApplicationController
     end
 
     def add_track_params
-      params.require(:track).permit(:track_id,:youtube_url)
+      params.require(:track).permit(:sp_track_id,:youtube_url)
     end
 
     def count_up_listen_params

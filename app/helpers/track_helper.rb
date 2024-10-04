@@ -3,9 +3,9 @@
 module TrackHelper
 
   #トラックを追加するメソッド
-  def add_track(track_id, youtube_url)
+  def add_track(sp_track_id, youtube_url)
     # 既存のトラックを確認
-    existing_track = Track.find_by(sp_track_id: track_id)
+    existing_track = Track.find_by(sp_track_id: sp_track_id)
     return { success: false, message: 'Track already exists' } if existing_track
 
     begin
@@ -13,7 +13,7 @@ module TrackHelper
       RSpotify.authenticate('c88268e353d2472c8ca1167a66091f88', '4e5aed842f334262b3cc2691f44198cc')
       ENV['ACCEPT_LANGUAGE'] = 'ja'
       # Spotifyからトラック情報を取得
-      track = RSpotify::Track.find(track_id)
+      track = RSpotify::Track.find(sp_track_id)
 
       # 複数アーティストの名前とIDを取得し、カンマ区切りで保存
       artist_names = track.artists.map(&:name).join(',')

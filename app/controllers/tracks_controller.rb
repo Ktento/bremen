@@ -1,5 +1,5 @@
 class TracksController < ApplicationController
-
+  include TrackHelper
   # # GET /tracks
   def index
     @track = Track.all
@@ -104,65 +104,13 @@ class TracksController < ApplicationController
       return
     end
 
-    # 既存のトラックを確認
-    existing_track = Track.find_by(sp_track_id: track_id)
-    if existing_track
-      render json: { message: "This track is already registered", track: existing_track }, status: :conflict
-      return
-    end
+    result=add_track(track_id,youtube_url)
 
-    begin
-      # Spotify APIの認証
-      RSpotify.authenticate("c88268e353d2472c8ca1167a66091f88", "4e5aed842f334262b3cc2691f44198cc")
-      ENV['ACCEPT_LANGUAGE'] = "ja"
-      # Spotifyからトラック情報を取得
-      track = RSpotify::Track.find(track_id)
-
-      # 複数アーティストの名前とIDを取得し、カンマ区切りで保存
-      artist_names = track.artists.map(&:name).join(",")
-      artist_ids = track.artists.map(&:id).join(",")
-
-      # アーティストが持つジャンルを結合
-      artist_genres = track.artists.flat_map(&:genres).uniq.join(", ")
-
-      # トラックが存在しない場合の処理
-      if track.nil?
-        render json: { error: "The specified track was not found" }, status: :not_found
-        return
-      end
-
-      puts track.name
-      puts artist_names
-      puts artist_genres
-      puts track.external_urls['spotify']
-      puts youtube_url
-      puts track.album.images.first['url']
-      puts track.id
-      puts artist_ids
-
-
-      # データベースに曲を保存
-      @track = Track.new(
-        track_name: track.name,
-        track_artist: artist_names, # 全アーティスト名を保存
-        track_category: artist_genres, # 全アーティストのジャンルを結合して保存
-        spotify_url: track.external_urls['spotify'],
-        youtube_url: youtube_url, # YouTube URLを保存
-        image_url: track.album.images.first['url'],
-        sp_track_id: track.id, # トラックIDを保存
-        sp_artist_id: artist_ids # 全アーティストのIDをカンマ区切りで保存
-      )
-
-      if @track.save
-        render json: @track, status: :created, location: @track
-      else
-        render json: @track.errors, status: :unprocessable_entity
-      end
-    rescue RSpotify::NotFound
-      render json: { error: "The specified track was not found" }, status: :not_found
-    rescue StandardError => e
-      render json: { error: e.message }, status: :internal_server_error
-    end
+    if result[:success]
+      render json: result[:track], status: :created
+    else
+      render json: { error: result[:message], errors: result[:errors] }, status: :unprocessable_entity
+    end   
   end
 
   def count_up_listen_track

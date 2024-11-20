@@ -1,24 +1,7 @@
-# README
+# bremen
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+技育ハッカソンで作成した音楽共有アプリケーションのバックエンドです。
 
-Things you may want to cover:
+# 使用技術一覧
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+<img alt="skills" src="https://skillicons.dev/icons?theme=dark&perline=7&i=ruby,rails,docker,postgres,railway" />

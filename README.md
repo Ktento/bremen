@@ -5,7 +5,6 @@ dockerのコンテナ上にRailsのAPIサーバを作成し、RailwayにGithub�
 フロントエンド↓</p>
 https://github.com/Ktento/breman-front
 
-# 動作例
 
 # 使用技術一覧
 
